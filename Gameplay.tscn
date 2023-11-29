@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cafk0bkxikm2q"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(960, 540)
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(960, 0)
+
+[node name="TrackLeft" type="Polygon2D" parent="Node2D"]
+position = Vector2(-250, 0)
+scale = Vector2(200, 1080)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
+
+[node name="TrackRight" type="Polygon2D" parent="Node2D"]
+position = Vector2(50, 0)
+scale = Vector2(200, 1080)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
