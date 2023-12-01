@@ -3,10 +3,10 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	int StartTime = 5;
+	var startTime: int = 0;
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
+	# var startTime = Get_Ticks_MSec ();
 	pass
