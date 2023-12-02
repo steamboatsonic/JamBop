@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cafk0bkxikm2q"]
+[gd_scene load_steps=5 format=3 uid="uid://cafk0bkxikm2q"]
 
 [ext_resource type="Texture2D" uid="uid://buh3in1ean0js" path="res://Art/GemBasic.png" id="1_e5u1s"]
 [ext_resource type="Script" path="res://GemManager.gd" id="2_xov5c"]
 [ext_resource type="Script" path="res://DebugText.gd" id="3_8gbxe"]
+[ext_resource type="Theme" uid="uid://cjvjkqvf2jvlb" path="res://DebugText.tres" id="3_qkf4m"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -26,18 +27,23 @@ polygon = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
 
 [node name="GemContainer" type="Node2D" parent="."]
 
-[node name="GemParent" type="Sprite2D" parent="GemContainer"]
+[node name="GemManager" type="Node" parent="GemContainer"]
+script = ExtResource("2_xov5c")
+
+[node name="GemParent" type="Sprite2D" parent="GemContainer/GemManager"]
 position = Vector2(809, 830)
 scale = Vector2(0.35, 0.35)
 texture = ExtResource("1_e5u1s")
-
-[node name="GemManager" type="Node" parent="GemContainer"]
-script = ExtResource("2_xov5c")
+metadata/TimingMSec = 0.0
+metadata/Lane = 0
+metadata/Instrument = ""
+metadata/Special = 0
 
 [node name="DebugText" type="RichTextLabel" parent="."]
 offset_left = 50.0
 offset_top = 50.0
-offset_right = 410.0
+offset_right = 680.0
 offset_bottom = 172.0
+theme = ExtResource("3_qkf4m")
 text = "Debug text!"
 script = ExtResource("3_8gbxe")
