@@ -1,11 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://qctdrnvx65hl"]
+[gd_scene load_steps=3 format=3 uid="uid://qctdrnvx65hl"]
 
 [ext_resource type="Texture2D" uid="uid://buh3in1ean0js" path="res://Art/GemBasic.png" id="1_48w3t"]
+[ext_resource type="Script" path="res://gem.gd" id="2_5siab"]
 
 [node name="GemParent" type="Sprite2D"]
 position = Vector2(809, 830)
 scale = Vector2(0.35, 0.35)
 texture = ExtResource("1_48w3t")
+script = ExtResource("2_5siab")
 metadata/TimingMSec = 0.0
 metadata/Lane = 0
 metadata/Instrument = ""

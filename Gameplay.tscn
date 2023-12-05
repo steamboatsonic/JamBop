@@ -1,9 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cafk0bkxikm2q"]
+[gd_scene load_steps=4 format=3 uid="uid://cafk0bkxikm2q"]
 
-[ext_resource type="PackedScene" uid="uid://qctdrnvx65hl" path="res://gem_parent.tscn" id="2_o08mt"]
 [ext_resource type="Script" path="res://GemManager.gd" id="2_xov5c"]
 [ext_resource type="Script" path="res://DebugText.gd" id="3_8gbxe"]
-[ext_resource type="Script" path="res://gem.gd" id="3_payah"]
 [ext_resource type="Theme" uid="uid://cjvjkqvf2jvlb" path="res://DebugText.tres" id="3_qkf4m"]
 
 [node name="Node2D" type="Node2D"]
@@ -32,9 +30,6 @@ polygon = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
 script = ExtResource("2_xov5c")
 metadata/todaysTime = 0.0
 metadata/startTime = 0.0
-
-[node name="GemParent" parent="GemContainer/GemManager" instance=ExtResource("2_o08mt")]
-script = ExtResource("3_payah")
 
 [node name="DebugText" type="RichTextLabel" parent="."]
 offset_left = 50.0

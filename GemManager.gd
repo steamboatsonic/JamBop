@@ -16,6 +16,7 @@ func _ready():
 	set_meta("startTime", Time.get_unix_time_from_system());
 	makeGem();
 	
+	
 	# var gemParent = $GemParent;
 	# var gemManager = $GemManager;
 	# var gems = [1];
@@ -38,7 +39,7 @@ func makeGem():
 	# get_parent().add_child(gem);
 	self.add_child(gem);
 	gem.position = Vector2(100,100);
-	gem.set_meta("TimingMSec", 10.000);
+	gem.set_meta("TimingMSec", 10000);
 	# writeDebug(str(gem.position));
 	# writeDebug(str(gem.get_meta("TimingMSec")));
 	

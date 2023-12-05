@@ -12,7 +12,7 @@ func _ready():
 func _process(_delta):
 	# writeDebug(str(gemManager.get_meta("todaysTime")))
 	if gemManager.get_meta("todaysTime") > (get_meta("TimingMSec") - 8000):
-		writeDebug("In Range");
+		writeDebug(str((get_meta("TimingMSec") - 8000)));
 		position = Vector2(
 			810, 
 			7500 + (gemManager.get_meta("todaysTime") - get_meta("TimingMSec")))
