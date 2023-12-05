@@ -40,7 +40,7 @@ func makeGem():
 	gem.position = Vector2(100,100);
 	gem.set_meta("TimingMSec", 10.000);
 	# writeDebug(str(gem.position));
-	writeDebug(str(gem.get_meta("TimingMSec")));
+	# writeDebug(str(gem.get_meta("TimingMSec")));
 	
 	
 	# instance.position = vector2(20,20);
@@ -49,9 +49,8 @@ func makeGem():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	# var startTime = Get_Ticks_MSec ();
-	todaysTime = Time.get_unix_time_from_system() - startTime;
-	set_meta("todaysTime", (Time.get_unix_time_from_system() - get_meta("startTime")));
-	# get_node("../../DebugText").text = str(todaysTime);
+	set_meta("todaysTime", (Time.get_unix_time_from_system() - get_meta("startTime")) * 1000);
+	# writeDebug(str(get_meta("todaysTime")));
 	
 func writeDebug(textToWrite:String):
 	get_node("../../DebugText").text = textToWrite;

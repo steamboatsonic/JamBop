@@ -10,8 +10,14 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	writeDebug(str(gemManager.get_meta("todaysTime")))
-	pass
+	# writeDebug(str(gemManager.get_meta("todaysTime")))
+	if gemManager.get_meta("todaysTime") > (get_meta("TimingMSec") - 8000):
+		writeDebug("In Range");
+		position = Vector2(
+			810, 
+			7500 + (gemManager.get_meta("todaysTime") - get_meta("TimingMSec")))
+	else:
+		writeDebug("Out of Rnnge");
 
 func writeDebug(textToWrite:String):
 	get_node("../../../DebugText").text = textToWrite;
