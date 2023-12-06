@@ -39,14 +39,19 @@ func _ready():
 func makeGem():
 	gem[0] = gemParent.instantiate();
 	# get_parent().add_child(gem);
-	self.add_child(gem[0]);
 	gem[0].position = Vector2(100,100);
-	gem[0].set_meta("TimingMSec", 10000);
+	gem[0].set_meta("TimingMSec", 5000);
+	# Track identities:
+	# 1 2 3 = left side
+	# 4 5 6 = right side
+	gem[0].set_meta("Lane", 2);
+	self.add_child(gem[0]);
 	
 	gem[1] = gemParent.instantiate();
-	self.add_child(gem[1]);
 	gem[1].position = Vector2(100,200);
-	gem[1].set_meta("TimingMSec", 12000);
+	gem[1].set_meta("TimingMSec", 6000);
+	gem[1].set_meta("Lane", 5);
+	self.add_child(gem[1]);
 	# writeDebug(str(gem.position));
 	# writeDebug(str(gem.get_meta("TimingMSec")));
 	
