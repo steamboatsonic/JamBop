@@ -1,18 +1,20 @@
 extends Node
 
 # var startTime: int = 0;
-var startTime: float = Time.get_unix_time_from_system();
 # "today" is this frame
 # "yesterday" is the previous frame 
 # "tomorrow" is the expected next frame
 var todaysTime: float = 0;
-var gems = [1];
+var gem = [0,1];
 
 
 const gemParent = preload("res://gem_parent.tscn");
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# gravity is how many pixels the gem moves per millisecond
+	# using the height of 1080 as standard
+	set_meta("gravity", 0.5)
 	set_meta("startTime", Time.get_unix_time_from_system());
 	makeGem();
 	
@@ -35,11 +37,16 @@ func _ready():
 	pass
 	
 func makeGem():
-	var gem = gemParent.instantiate();
+	gem[0] = gemParent.instantiate();
 	# get_parent().add_child(gem);
-	self.add_child(gem);
-	gem.position = Vector2(100,100);
-	gem.set_meta("TimingMSec", 10000);
+	self.add_child(gem[0]);
+	gem[0].position = Vector2(100,100);
+	gem[0].set_meta("TimingMSec", 10000);
+	
+	gem[1] = gemParent.instantiate();
+	self.add_child(gem[1]);
+	gem[1].position = Vector2(100,200);
+	gem[1].set_meta("TimingMSec", 12000);
 	# writeDebug(str(gem.position));
 	# writeDebug(str(gem.get_meta("TimingMSec")));
 	
