@@ -24,6 +24,11 @@ scale = Vector2(200, 1080)
 color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
 
+[node name="Line2D" type="Line2D" parent="Tracks"]
+position = Vector2(0, 900)
+points = PackedVector2Array(-250, 0, 250, 0)
+width = 2.0
+
 [node name="GemContainer" type="Node2D" parent="."]
 
 [node name="GemManager" type="Node" parent="GemContainer"]

@@ -30,6 +30,10 @@ func _process(_delta):
 	else:
 		# writeDebug("Out of Rnnge");
 		pass
+	
+func _input(event):
+	if event.is_action_pressed("Left"):
+		pass
 
 func writeDebug(textToWrite:String):
 	get_node("../../../DebugText").text = textToWrite;
