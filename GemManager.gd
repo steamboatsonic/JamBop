@@ -6,7 +6,8 @@ extends Node
 # "tomorrow" is the expected next frame
 var todaysTime: float = 0;
 var gem = [0,1];
-
+var inputWaitingLane = [0, 1, 2];
+var inputWaitingTiming = [0, 1, 2];
 
 const gemParent = preload("res://gem_parent.tscn");
 
@@ -64,6 +65,26 @@ func _process(_delta):
 	# var startTime = Get_Ticks_MSec ();
 	set_meta("todaysTime", (Time.get_unix_time_from_system() - get_meta("startTime")) * 1000);
 	# writeDebug(str(get_meta("todaysTime")));
+	
+func _input(event):
+	if event.is_action_pressed("Left"):
+		pass
+	elif event.is_action_pressed("Down"):
+		inputWaitingTiming.push_back(get_meta("todaysTime"));
+		inputWaitingLane.push_back(2);
+		pass
+	elif event.is_action_pressed("Up"):
+		pass
+	elif event.is_action_pressed("Right"):
+		pass
+	elif event.is_action_pressed("YButton"):
+		pass
+	elif event.is_action_pressed("BButton"):
+		pass
+	elif event.is_action_pressed("Xbutton"):
+		pass
+	elif event.is_action_pressed("AButton"):
+		pass
 	
 func writeDebug(textToWrite:String):
 	get_node("../../DebugText").text = textToWrite;
