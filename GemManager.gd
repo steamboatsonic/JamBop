@@ -79,6 +79,13 @@ func _process(_delta):
 	#if inputWaitingTiming.size() == 0:
 	#	writeDebug("All caught up")
 	# writeDebug(str(get_meta("todaysTime")));
+	
+	# when a button is pressed, all gems in range are tested
+	# in range = on a lane on the same side and in the timing window
+	# the highest-scoring gem is counted
+	# gem scores are not finalized until they fully leave the timing window
+	# if a second button press scores higher on a gem already claimed
+	# the first press is reapplied on any earlier gem if it scores higher
 		
 func _input(event):
 	if event.is_action_pressed("Left"):
