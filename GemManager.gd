@@ -91,7 +91,7 @@ func _process(_delta):
 			#temp = inputWaitingLane.pop_front();
 			#temp = inputWaitingTiming.pop_front();
 			writeDebug("Pressed " + str(inputWaitingLane.pop_front()) + " At " + str(inputWaitingTiming.pop_front()))
-		
+			
 		# Now look for gems that have left the playfield without being hit
 		
 		while get_meta("todaysTime") > gem[nextGem].get_meta("TimingMSec") + 250:

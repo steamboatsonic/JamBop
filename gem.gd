@@ -8,6 +8,7 @@ var xPosition:float = 0;
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Gem will be active until it has left the target zone
+	set_meta("OnScreen", false);
 	set_meta("Active", true);
 	
 	xPosition = 100.00;
@@ -26,15 +27,14 @@ func _process(_delta):
 	# writeDebug(str(gemManager.get_meta("todaysTime")))
 	MSecUntilPerfect = get_meta("TimingMSec") - gemManager.get_meta("todaysTime");
 	# writeDebug(str(MSecUntilPerfect));
-	
-	if MSecUntilPerfect < 900 / gemManager.get_meta("gravity"):
+	if (get_meta("OnScreen") == false):
+		if MSecUntilPerfect < 900 / gemManager.get_meta("gravity"):
+			set_meta("OnScreen", true)
+	else:
 		# writeDebug(str((get_meta("TimingMSec") - 8000)));
 		position = Vector2(
 			xPosition, 
 			900 - (MSecUntilPerfect * gemManager.get_meta("gravity")));
-	else:
-		# writeDebug("Out of Rnnge");
-		pass
 
 func writeDebug(textToWrite:String):
 	get_node("../../../DebugText").text = textToWrite;
