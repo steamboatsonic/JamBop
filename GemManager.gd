@@ -12,6 +12,11 @@ var nextGem: int = 0;
 # stage 0 = get ready, 1 = playing, 2 = finished
 var stage: int = 0;
 
+var laneToHit: int = 0;
+var gemToHit: int = 0;
+var timingOfHit: float = 0;
+var somethingToHit: bool = false;
+
 var temp;
 
 const gemParent = preload("res://gem_parent.tscn");
@@ -90,15 +95,38 @@ func _process(_delta):
 		for x in inputWaitingTiming.size():
 			#temp = inputWaitingLane.pop_front();
 			#temp = inputWaitingTiming.pop_front();
-			writeDebug("Pressed " + str(inputWaitingLane.pop_front()) + " At " + str(inputWaitingTiming.pop_front()))
+			# writeDebug("Pressed " + str(inputWaitingLane.pop_front()) + " At " + str(inputWaitingTiming.pop_front()))
+			# look for earliest gem in this lane in range
+			gemToHit = nextGem;
+			somethingToHit = false;
+			laneToHit = inputWaitingLane.pop_front();
+			timingOfHit = inputWaitingTiming.pop_front();
+			
+			while gem[gemToHit].get_meta("Lane") != laneToHit  \
+				|| gem[gemToHit].get_meta("Active") == false:
+				if gem[gemToHit].get_meta("TimingMSec") < timingOfHit - 250.00:
+					#reaching this means any gems in range are in different lanes (no hit)
+					somethingToHit = false;
+					break;
+				gemToHit += 1;
+			
+			# we either found the next gem in the lane, or found there are no gems in the lane
+			if gem[gemToHit].get_meta("Lane") == laneToHit:
+				somethingToHit = true;
+				writeDebug (str(gem[gemToHit].get_meta("TimingMSec") - timingOfHit) + "From Perfect");
+				gem[gemToHit].set_meta("HitAccuracy", (gem[gemToHit].get_meta("TimingMSec") - timingOfHit));
+				gem[gemToHit].set_meta("Active", false);
 			
 		# Now look for gems that have left the playfield without being hit
-		
-		while get_meta("todaysTime") > gem[nextGem].get_meta("TimingMSec") + 250:
+		while gem[nextGem].get_meta("MSecUntilPerfect") < -250.00:
+			if gem[nextGem].get_meta("Active") == true:
+				gem[nextGem].set_meta("Active", false);
+				# writeDebug("nextGem is now " + str(nextGem))
+				writeDebug("Gem missed...")
+			
 			nextGem += 1;
-			writeDebug("nextGem is now " + str(nextGem))
 			if nextGem >= gem.size():
-				writeDebug("All gems accounted for")
+				# writeDebug("All gems accounted for")
 				stage = 2;
 				break
 	
@@ -132,7 +160,7 @@ func _input(event):
 	elif event.is_action_pressed("BButton"):
 		generateInputWaiting(5);
 		pass
-	elif event.is_action_pressed("Xbutton"):
+	elif event.is_action_pressed("XButton"):
 		generateInputWaiting(5);
 		pass
 	elif event.is_action_pressed("AButton"):

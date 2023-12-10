@@ -15,3 +15,5 @@ metadata/Special = 0
 metadata/Score = 0
 metadata/Road = 0
 metadata/Active = false
+metadata/MSecUntilPerfect = 0.0
+metadata/HitAccuracy = 0.0

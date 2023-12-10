@@ -2,7 +2,6 @@ extends Sprite2D
 
 @onready
 var gemManager = $"..";
-var MSecUntilPerfect:float = 0;
 var xPosition:float = 0;
 
 # Called when the node enters the scene tree for the first time.
@@ -25,16 +24,16 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	# writeDebug(str(gemManager.get_meta("todaysTime")))
-	MSecUntilPerfect = get_meta("TimingMSec") - gemManager.get_meta("todaysTime");
+	set_meta("MSecUntilPerfect", get_meta("TimingMSec") - gemManager.get_meta("todaysTime"));
 	# writeDebug(str(MSecUntilPerfect));
 	if (get_meta("OnScreen") == false):
-		if MSecUntilPerfect < 900 / gemManager.get_meta("gravity"):
+		if get_meta("MSecUntilPerfect") < 900 / gemManager.get_meta("gravity"):
 			set_meta("OnScreen", true)
 	else:
 		# writeDebug(str((get_meta("TimingMSec") - 8000)));
 		position = Vector2(
 			xPosition, 
-			900 - (MSecUntilPerfect * gemManager.get_meta("gravity")));
+			900 - (get_meta("MSecUntilPerfect") * gemManager.get_meta("gravity")));
 
 func writeDebug(textToWrite:String):
 	get_node("../../../DebugText").text = textToWrite;
