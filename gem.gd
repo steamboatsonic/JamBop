@@ -7,14 +7,19 @@ var xPosition:float = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Gem will be active until it has left the target zone
+	set_meta("Active", true);
+	
 	xPosition = 100.00;
 	
 	if get_meta("Lane") < 4:
 		xPosition = 750.00 + (float(get_meta("Lane")) * 30.00)
+		set_meta("Road", 1)
 	elif get_meta("Lane") >= 4:
 		xPosition = 960.00 + (float(get_meta("Lane")) * 30.00)
+		set_meta("Road", 2)
 	
-	writeDebug(str(xPosition));
+	# writeDebug(str(xPosition));
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

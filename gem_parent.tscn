@@ -13,3 +13,5 @@ metadata/Lane = 0
 metadata/Instrument = ""
 metadata/Special = 0
 metadata/Score = 0
+metadata/Road = 0
+metadata/Active = false

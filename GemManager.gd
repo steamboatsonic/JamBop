@@ -4,22 +4,41 @@ extends Node
 # "today" is this frame
 # "yesterday" is the previous frame 
 # "tomorrow" is the expected next frame
-var todaysTime: float = 0;
-var gem = [0,1];
+var gem = [0,1, 2, 3];
 var inputWaitingLane = [];
 var inputWaitingTiming = [];
+# var inputRecordedTiming = [];
+var nextGem: int = 0;
+# stage 0 = get ready, 1 = playing, 2 = finished
+var stage: int = 0;
+
 var temp;
 
 const gemParent = preload("res://gem_parent.tscn");
+# How many ms in each direction you can be off before being knocked to the next timing window
+# 5000, 4500, 4000, 3500, 3000, 2500, 2000
+const timingWindow = [25, 40, 65, 100, 175, 225, 250];
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# each lane has its own array of times your pressed the button for it
+	#for i in range(7): 
+	#	inputRecordedTiming.append([])
+	
 	# gravity is how many pixels the gem moves per millisecond
 	# using the height of 1080 as standard
 	set_meta("gravity", 0.5)
 	set_meta("startTime", Time.get_unix_time_from_system());
-	makeGem();
+	nextGem = 0;
+	inputWaitingLane.clear();
+	inputWaitingTiming.clear();
 	
+	makeGem(0, 2000, 2);
+	makeGem(1, 2250, 2);
+	makeGem(2, 2250, 5);
+	makeGem(3, 2500, 5);
+	
+	stage = 1;
 	
 	# var gemParent = $GemParent;
 	# var gemManager = $GemManager;
@@ -38,22 +57,17 @@ func _ready():
 	# gems[0].set_meta(TimingMSec, 10000.00);
 	pass
 	
-func makeGem():
-	gem[0] = gemParent.instantiate();
+func makeGem(gemNumber:int, timingToApply, laneToApply):
+	gem[gemNumber] = gemParent.instantiate();
 	# get_parent().add_child(gem);
-	gem[0].position = Vector2(100,100);
-	gem[0].set_meta("TimingMSec", 5000);
+	gem[gemNumber].position = Vector2(100,100);
+	gem[gemNumber].set_meta("TimingMSec", timingToApply);
 	# Track identities:
 	# 1 2 3 = left side
 	# 4 5 6 = right side
-	gem[0].set_meta("Lane", 2);
-	self.add_child(gem[0]);
+	gem[gemNumber].set_meta("Lane", laneToApply);
+	self.add_child(gem[gemNumber]);
 	
-	gem[1] = gemParent.instantiate();
-	gem[1].position = Vector2(100,200);
-	gem[1].set_meta("TimingMSec", 6000);
-	gem[1].set_meta("Lane", 5);
-	self.add_child(gem[1]);
 	# writeDebug(str(gem.position));
 	# writeDebug(str(gem.get_meta("TimingMSec")));
 	
@@ -71,11 +85,23 @@ func _process(_delta):
 	#if inputWaitingTiming.size() == 2:
 	#	writeDebug("Pressed two at once")
 	
-	for x in inputWaitingTiming.size():
-		#temp = inputWaitingLane.pop_front();
-		#temp = inputWaitingTiming.pop_front();
-		writeDebug("Pressed " + str(inputWaitingLane.pop_front()) + " At " + str(inputWaitingTiming.pop_front()))
+	# for pressed buttons, check for gems on this side
+	if stage == 1:
+		for x in inputWaitingTiming.size():
+			#temp = inputWaitingLane.pop_front();
+			#temp = inputWaitingTiming.pop_front();
+			writeDebug("Pressed " + str(inputWaitingLane.pop_front()) + " At " + str(inputWaitingTiming.pop_front()))
 		
+		# Now look for gems that have left the playfield without being hit
+		
+		while get_meta("todaysTime") > gem[nextGem].get_meta("TimingMSec") + 250:
+			nextGem += 1;
+			writeDebug("nextGem is now " + str(nextGem))
+			if nextGem >= gem.size():
+				writeDebug("All gems accounted for")
+				stage = 2;
+				break
+	
 	#if inputWaitingTiming.size() == 0:
 	#	writeDebug("All caught up")
 	# writeDebug(str(get_meta("todaysTime")));
