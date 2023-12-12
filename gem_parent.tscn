@@ -17,3 +17,5 @@ metadata/Road = 0
 metadata/Active = false
 metadata/MSecUntilPerfect = 0.0
 metadata/HitAccuracy = 0.0
+metadata/InRange = false
+metadata/Status = ""

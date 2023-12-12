@@ -104,31 +104,28 @@ func _process(_delta):
 			
 			while gem[gemToHit].get_meta("Lane") != laneToHit  \
 				|| gem[gemToHit].get_meta("Active") == false:
-				if gem[gemToHit].get_meta("TimingMSec") < timingOfHit - 250.00:
+				if gem[gemToHit].get_meta("TimingMSec") < timingOfHit - timingWindow.back():
 					#reaching this means any gems in range are in different lanes (no hit)
 					somethingToHit = false;
 					break;
 				gemToHit += 1;
 			
 			# we either found the next gem in the lane, or found there are no gems in the lane
-			if gem[gemToHit].get_meta("Lane") == laneToHit:
+			if gem[gemToHit].get_meta("Lane") == laneToHit \
+				&& gem[gemToHit].get_meta("Active") == true:
 				somethingToHit = true;
-				writeDebug (str(gem[gemToHit].get_meta("TimingMSec") - timingOfHit) + "From Perfect");
-				gem[gemToHit].set_meta("HitAccuracy", (gem[gemToHit].get_meta("TimingMSec") - timingOfHit));
-				gem[gemToHit].set_meta("Active", false);
+				gem[gemToHit].hit(timingOfHit);
 			
 		# Now look for gems that have left the playfield without being hit
-		while gem[nextGem].get_meta("MSecUntilPerfect") < -250.00:
-			if gem[nextGem].get_meta("Active") == true:
-				gem[nextGem].set_meta("Active", false);
-				# writeDebug("nextGem is now " + str(nextGem))
-				writeDebug("Gem missed...")
-			
-			nextGem += 1;
-			if nextGem >= gem.size():
-				# writeDebug("All gems accounted for")
-				stage = 2;
-				break
+		#while gem[nextGem].get_meta("MSecUntilPerfect") < -timingWindow.back():
+			#TODO
+		#	gem[nextGem].passedBy();
+		#	
+		#	nextGem += 1;
+		#	if nextGem >= gem.size():
+		#		# writeDebug("All gems accounted for")
+		#		stage = 2;
+		#		break
 	
 	#if inputWaitingTiming.size() == 0:
 	#	writeDebug("All caught up")
