@@ -36,33 +36,65 @@ func _process(_delta):
 	if get_meta("Status") == "OffScreen":
 		if get_meta("MSecUntilPerfect") < 900 / gemManager.get_meta("gravity"):
 			set_meta("Status", "OnScreen")
+			writeDebug("On Screen");
 	
 	#if earlier stage than InRange, check if it's InRange
 	if get_meta("Status") == "OnScreen":
 		if get_meta("MSecUntilPerfect") < 250.00:
 			set_meta("Status", "InRange");
 			
-	if get_meta("Status") == "OnScreen" || "InRange" || "Missed":
-		position = Vector2(
-			xPosition, 
-			900 - (get_meta("MSecUntilPerfect") * gemManager.get_meta("gravity")));
-		#check if it's past the last timing window
+	if get_meta("Status") == "OnScreen" \
+		|| get_meta("Status") == "InRange" \
+		|| get_meta("Status") == "Missed":
+			position = Vector2(
+				xPosition, 
+				900 - (get_meta("MSecUntilPerfect") * gemManager.get_meta("gravity")));
+			#check if it's past the last timing window
+	
+	if get_meta("Status") == "Hit":
+		if get_meta("Road") == 1:
+			position = Vector2(
+			position.x - 10,
+			position.y);
+			if position.x < 400:
+				position = Vector2(
+				400,
+				position.y);
+				set_meta("Status", "Completed")
+				visible = false;
+		elif get_meta("Road") == 2:
+			position = Vector2(
+			position.x + 10,
+			position.y);
+			if position.x < 1520:
+				position = Vector2(
+				1520,
+				position.y);
+				set_meta("Status", "Completed")
+				visible = false;
 			
 	if get_meta("Status") == "Missed":
 		if get_meta("MSecUntilPerfect") < -750.00 / gemManager.get_meta("gravity"):
 			set_meta("Status", "Completed");
+			visible = false;
 
 func hit(timingOfHit:float):
-	writeDebug (str(get_meta("TimingMSec") - timingOfHit) + "From Perfect");
+	# HitAccuracy is like MSecUntilPerfect except it is accurate to exact input timing
+	# between frames
+	# early = positive, late = negative
 	set_meta("HitAccuracy", (get_meta("TimingMSec") - timingOfHit));
-	set_meta("Active", false);
+	writeDebug (str(get_meta("HitAccuracy")) + "From Perfect");
+	# During Hit slide animation, yPosition will be locked based on exact timing of input
+	position = Vector2(
+		position.x,
+		900 - (get_meta("HitAccuracy") * gemManager.get_meta("gravity")));
 	set_meta("Status", "Hit");
-	visible = false;
 	
 func miss():
-	writeDebug (str("Missed Gem..."));
-	set_meta("Status", "Missed");
-	modulate = Color.GRAY;
+	if get_meta("Status") != "Hit":
+		writeDebug (str("Missed Gem..."));
+		set_meta("Status", "Missed");
+		modulate = Color.GRAY;
 
 func writeDebug(textToWrite:String):
 	get_node("../../../DebugText").text = textToWrite;
