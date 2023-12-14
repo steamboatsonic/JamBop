@@ -30,7 +30,7 @@ func _process(_delta):
 	
 	#If NOT completed, set MSecUntilPerfect
 	if get_meta("Status") != "Completed":
-		set_meta("MSecUntilPerfect", get_meta("TimingMSec") - gemManager.get_meta("todaysTime"));
+		set_meta("MSecUntilPerfect", get_meta("TimingMSec") - gemManager.get_meta("TodaysTime"));
 	
 	#if offSCreen, check if it's ready to be onScreen
 	if get_meta("Status") == "OffScreen":
@@ -47,9 +47,6 @@ func _process(_delta):
 			xPosition, 
 			900 - (get_meta("MSecUntilPerfect") * gemManager.get_meta("gravity")));
 		#check if it's past the last timing window
-		if get_meta("MSecUntilPerfect") < -250.00:
-			set_meta("Status", "Missed");
-			modulate = Color.GRAY;
 			
 	if get_meta("Status") == "Missed":
 		if get_meta("MSecUntilPerfect") < -750.00 / gemManager.get_meta("gravity"):
@@ -59,11 +56,13 @@ func hit(timingOfHit:float):
 	writeDebug (str(get_meta("TimingMSec") - timingOfHit) + "From Perfect");
 	set_meta("HitAccuracy", (get_meta("TimingMSec") - timingOfHit));
 	set_meta("Active", false);
+	set_meta("Status", "Completed");
 	visible = false;
-
-func passedBy():
-	set_meta("Active", false);
-	writeDebug("Gem missed...")
+	
+func miss():
+	writeDebug (str("Missed Gem..."));
+	set_meta("Status", "Missed");
+	modulate = Color.GRAY;
 
 func writeDebug(textToWrite:String):
 	get_node("../../../DebugText").text = textToWrite;

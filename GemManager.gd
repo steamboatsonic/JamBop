@@ -33,7 +33,7 @@ func _ready():
 	# gravity is how many pixels the gem moves per millisecond
 	# using the height of 1080 as standard
 	set_meta("gravity", 0.5)
-	set_meta("startTime", Time.get_unix_time_from_system());
+	set_meta("StartTime", Time.get_unix_time_from_system());
 	nextGem = 0;
 	inputWaitingLane.clear();
 	inputWaitingTiming.clear();
@@ -83,7 +83,7 @@ func makeGem(gemNumber:int, timingToApply, laneToApply):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	# var startTime = Get_Ticks_MSec ();
-	set_meta("todaysTime", (Time.get_unix_time_from_system() - get_meta("startTime")) * 1000);
+	set_meta("TodaysTime", (Time.get_unix_time_from_system() - get_meta("StartTime")) * 1000);
 	
 	#qinput
 	#Here is where we handle the InputWaiting
@@ -119,15 +119,25 @@ func _process(_delta):
 					gem[gemToHit].hit(timingOfHit);
 			
 		# Now look for gems that have left the playfield without being hit
+		# Doing it here instead of gem.gd to make sure inputs were considered first
+		if nextGem >= gem.size():
+			stage = 2
+		else:
+			while gem[nextGem].get_meta("TimingMSec") < get_meta("TodaysTime") - timingWindow.back():
+				gem[gemToHit].miss();
+				nextGem += 1;
+				if nextGem >= gem.size():
+					writeDebug("All gems accounted for")
+					stage = 2;
+					break
+		
 		#while gem[nextGem].get_meta("MSecUntilPerfect") < -timingWindow.back():
 			#TODO
 		#	gem[nextGem].passedBy();
 		#	
 		#	nextGem += 1;
 		#	if nextGem >= gem.size():
-		#		# writeDebug("All gems accounted for")
-		#		stage = 2;
-		#		break
+		#		
 	
 	#if inputWaitingTiming.size() == 0:
 	#	writeDebug("All caught up")
@@ -167,7 +177,7 @@ func _input(event):
 		pass
 	
 func generateInputWaiting(lane:float):
-	inputWaitingTiming.push_back(get_meta("todaysTime"));
+	inputWaitingTiming.push_back(get_meta("TodaysTime"));
 	inputWaitingLane.push_back(lane);
 	
 func writeDebug(textToWrite:String):
