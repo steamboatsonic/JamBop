@@ -104,7 +104,10 @@ func _process(_delta):
 			
 			#skip gems if they are in the wrong lane or have already completed
 			while gem[gemToHit].get_meta("Lane") != laneToHit  \
-				|| gem[gemToHit].get_meta("TimingMSec") < timingOfHit - timingWindow.back():
+				|| gem[gemToHit].get_meta("TimingMSec") < timingOfHit - timingWindow.back() \
+				|| gem[gemToHit].get_meta("Status") == "Missed" \
+				|| gem[gemToHit].get_meta("Status") == "Hit" \
+				|| gem[gemToHit].get_meta("Status") == "Completed":
 					#if the gem we're checking hasn't reached the timing window yet, no gem was hit
 					if gem[gemToHit].get_meta("TimingMSec") > timingOfHit + timingWindow.back():
 						break;
@@ -112,11 +115,12 @@ func _process(_delta):
 			
 			# we either found the next gem in the lane, or found there are no gems in the lane
 			# if the gem we cycled to is in the lane and in the timing window
-			if gem[gemToHit].get_meta("Lane") == laneToHit \
-				and gem[gemToHit].get_meta("TimingMSec") > timingOfHit - timingWindow.back() \
-				and gem[gemToHit].get_meta("TimingMSec") < timingOfHit + timingWindow.back():
-					somethingToHit = true;
-					gem[gemToHit].hit(timingOfHit);
+			if gemToHit < gem.size():
+				if gem[gemToHit].get_meta("Lane") == laneToHit \
+					and gem[gemToHit].get_meta("TimingMSec") > timingOfHit - timingWindow.back() \
+					and gem[gemToHit].get_meta("TimingMSec") < timingOfHit + timingWindow.back():
+						somethingToHit = true;
+						gem[gemToHit].hit(timingOfHit);
 			
 		# Now look for gems that have left the playfield without being hit
 		# Doing it here instead of gem.gd to make sure inputs were considered first
@@ -127,7 +131,7 @@ func _process(_delta):
 				gem[gemToHit].miss();
 				nextGem += 1;
 				if nextGem >= gem.size():
-					writeDebug("All gems accounted for")
+					# writeDebug("All gems accounted for")
 					stage = 2;
 					break
 		

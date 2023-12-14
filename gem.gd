@@ -11,7 +11,7 @@ func _ready():
 	set_meta("Active", true); # Hasn't been hit or missed yet
 	set_meta("InRange", false); # Is inside the timing window
 	#OffScreen, OnScreen, InRange, Missed, Hit, Completed
-	set_meta("Status", "Offscreen");
+	set_meta("Status", "OffScreen");
 	
 	xPosition = 100.00;
 	
@@ -36,7 +36,6 @@ func _process(_delta):
 	if get_meta("Status") == "OffScreen":
 		if get_meta("MSecUntilPerfect") < 900 / gemManager.get_meta("gravity"):
 			set_meta("Status", "OnScreen")
-			writeDebug("On Screen");
 	
 	#if earlier stage than InRange, check if it's InRange
 	if get_meta("Status") == "OnScreen":
@@ -66,7 +65,7 @@ func _process(_delta):
 			position = Vector2(
 			position.x + 10,
 			position.y);
-			if position.x < 1520:
+			if position.x > 1520:
 				position = Vector2(
 				1520,
 				position.y);
