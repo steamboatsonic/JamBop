@@ -10,7 +10,7 @@ func _ready():
 	set_meta("OnScreen", false);
 	set_meta("Active", true); # Hasn't been hit or missed yet
 	set_meta("InRange", false); # Is inside the timing window
-	#OffScreen, OnScreen, InRange, Missed, Completed
+	#OffScreen, OnScreen, InRange, Missed, Hit, Completed
 	set_meta("Status", "Offscreen");
 	
 	xPosition = 100.00;
@@ -56,7 +56,7 @@ func hit(timingOfHit:float):
 	writeDebug (str(get_meta("TimingMSec") - timingOfHit) + "From Perfect");
 	set_meta("HitAccuracy", (get_meta("TimingMSec") - timingOfHit));
 	set_meta("Active", false);
-	set_meta("Status", "Completed");
+	set_meta("Status", "Hit");
 	visible = false;
 	
 func miss():
