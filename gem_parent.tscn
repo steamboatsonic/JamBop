@@ -18,3 +18,4 @@ metadata/MSecUntilPerfect = 0.0
 metadata/HitAccuracy = 0.0
 metadata/InRange = false
 metadata/Status = ""
+metadata/EarlyHit = false

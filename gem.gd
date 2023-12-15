@@ -85,7 +85,33 @@ func hit(timingOfHit:float):
 	# between frames
 	# early = positive, late = negative
 	set_meta("HitAccuracy", (get_meta("TimingMSec") - timingOfHit));
-	writeDebug (str(get_meta("HitAccuracy")) + "From Perfect");
+	# writeDebug (str(get_meta("HitAccuracy")) + "From Perfect");
+	var absAccuracy = abs(get_meta("HitAccuracy"));
+	if absAccuracy > gemManager.timingWindow[6]:
+		set_meta("Score", 2000);
+		writeDebug ("X( Scored while out of range!")
+	elif absAccuracy > gemManager.timingWindow[5]:
+		set_meta("Score", 2000);
+	elif absAccuracy > gemManager.timingWindow[4]:
+		set_meta("Score", 2500);
+	elif absAccuracy > gemManager.timingWindow[3]:
+		set_meta("Score", 3000);
+	elif absAccuracy > gemManager.timingWindow[2]:
+		set_meta("Score", 3500);
+	elif absAccuracy > gemManager.timingWindow[1]:
+		set_meta("Score", 4000);
+	elif absAccuracy > gemManager.timingWindow[0]:
+		set_meta("Score", 4500);
+	else:
+		set_meta("Score", 5000);
+	
+	if get_meta("HitAccuracy") > 0:
+		set_meta("EarlyHit", true);
+		writeDebug(str(get_meta("Score")) + ", Early");
+	else:
+		set_meta("EarlyHit", false);
+		writeDebug(str(get_meta("Score")) + ", Late");
+	
 	# During Hit slide animation, yPosition will be locked based on exact timing of input
 	position = Vector2(
 		position.x,
