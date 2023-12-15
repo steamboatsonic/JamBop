@@ -3,6 +3,9 @@ extends Sprite2D
 @onready
 var gemManager = $"..";
 var xPosition:float = 0;
+var judgment;
+
+const judgmentParent = preload("res://judgmentParent.tscn");
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -88,12 +91,25 @@ func hit(timingOfHit:float):
 		position.x,
 		900 - (get_meta("HitAccuracy") * gemManager.get_meta("gravity")));
 	set_meta("Status", "Hit");
+	makeJudgment(get_meta("HitAccuracy"));
 	
 func miss():
 	if get_meta("Status") != "Hit":
 		writeDebug (str("Missed Gem..."));
 		set_meta("Status", "Missed");
 		modulate = Color.GRAY;
+		
+func makeJudgment(timing:float):
+	judgment = judgmentParent.instantiate();
+	judgment.position = Vector2(960 - timing, 300);
+	judgment.set_meta("Timing", timing);
+	if timing < -25:
+		judgment.modulate = Color.GREEN;
+	elif timing > 25:
+		judgment.modulate = Color.ORANGE_RED;
+	else:
+		judgment.modulate = Color.WHITE;
+	$"../".add_child(judgment);
 
 func writeDebug(textToWrite:String):
 	get_node("../../../DebugText").text = textToWrite;

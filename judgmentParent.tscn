@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://y2nxhxbfv4po"]
+
+[ext_resource type="Texture2D" uid="uid://buh3in1ean0js" path="res://Art/GemBasic.png" id="1_m1rf5"]
+[ext_resource type="Script" path="res://judgmentParent.gd" id="2_vbg53"]
+
+[node name="Judgment" type="Sprite2D"]
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("1_m1rf5")
+script = ExtResource("2_vbg53")
+metadata/Timing = 0.0
