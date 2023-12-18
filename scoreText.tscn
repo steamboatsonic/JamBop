@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://db6t03cm5etl6"]
+
+[sub_resource type="Theme" id="Theme_quesp"]
+default_font_size = 50
+
+[node name="scoreText" type="RichTextLabel"]
+offset_right = 202.0
+offset_bottom = 94.0
+theme = SubResource("Theme_quesp")
+text = "5000"

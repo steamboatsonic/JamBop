@@ -4,8 +4,10 @@ extends Sprite2D
 var gemManager = $"..";
 var xPosition:float = 0;
 var judgment;
+var scoreText;
 
 const judgmentParent = preload("res://judgmentParent.tscn");
+const scoreTextParent = preload("res://scoreText.tscn");
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -56,7 +58,7 @@ func _process(_delta):
 	if get_meta("Status") == "Hit":
 		if get_meta("Road") == 1:
 			position = Vector2(
-			position.x - 10,
+			position.x - 20,
 			position.y);
 			if position.x < 400:
 				position = Vector2(
@@ -66,7 +68,7 @@ func _process(_delta):
 				visible = false;
 		elif get_meta("Road") == 2:
 			position = Vector2(
-			position.x + 10,
+			position.x + 20,
 			position.y);
 			if position.x > 1520:
 				position = Vector2(
@@ -118,6 +120,7 @@ func hit(timingOfHit:float):
 		900 - (get_meta("HitAccuracy") * gemManager.get_meta("gravity")));
 	set_meta("Status", "Hit");
 	makeJudgment(get_meta("HitAccuracy"));
+	makeScoreText(get_meta("Score"), get_meta("EarlyHit"));
 	
 func miss():
 	if get_meta("Status") != "Hit":
@@ -136,6 +139,12 @@ func makeJudgment(timing:float):
 	else:
 		judgment.modulate = Color.WHITE;
 	$"../".add_child(judgment);
+
+func makeScoreText(score:int, EarlyHit:bool):
+	scoreText = scoreTextParent.instantiate();
+	scoreText.position = Vector2.ZERO;
+	self.add_child(scoreText);
+	pass
 
 func writeDebug(textToWrite:String):
 	get_node("../../../DebugText").text = textToWrite;
