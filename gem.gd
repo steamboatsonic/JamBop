@@ -142,8 +142,9 @@ func makeJudgment(timing:float):
 
 func makeScoreText(score:int, EarlyHit:bool):
 	scoreText = scoreTextParent.instantiate();
-	scoreText.position = Vector2.ZERO;
-	self.add_child(scoreText);
+	scoreText.position = position;
+	$".".add_child(scoreText);
+	writeDebug(str(scoreText.position.x) + " ");
 	pass
 
 func writeDebug(textToWrite:String):
